@@ -3,12 +3,6 @@ window.addEventListener("DOMContentLoaded", () => {
   const inputField = document.getElementById("input-field");
   const contentEl = document.getElementById("content");
 
-  //   console.log(contentEl.innerText);
-
-  //   console.log(/Lorem/.test(contentEl.innerText));
-  // new RegExp(/Lorem/g)
-  // /Lorem/.test
-
   if (inputField) {
     inputField.addEventListener("input", () => {
       function reqListener() {
