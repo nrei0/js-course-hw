@@ -1,0 +1,15 @@
+{
+  "name": "todo-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "express": "3.x"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "nodemon --watch . ./src server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

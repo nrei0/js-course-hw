@@ -1,0 +1,44 @@
+body {
+	background-color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+}
+
+.todo-items {
+  padding: 0;
+}
+
+.todo-items > .todo-item {
+  list-style-type: none;
+  padding: 8px;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  margin-top: 8px;
+  background-color: #f7f7f7;
+  font-size: 14px;
+  color: #151515;
+  cursor: pointer;
+}
+
+.todo-items > .todo-item:hover {
+  background-color: #f0f0f0;
+}
+
+.todo-add {
+  list-style-type: none;
+  padding: 8px;
+  border: 1px dashed #999;
+  border-radius: 8px;
+  margin-top: 8px;
+  font-size: 14px;
+  color: #151515;
+  cursor: pointer;
+}
+
+.todo-edit {
+  border: 0;
+}
+
+.todo-edit:focus {
+  outline: none;
+}
