@@ -4,9 +4,12 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
+    "crypto": "^1.0.1",
     "express": "3.x"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  },
   "scripts": {
     "start": "nodemon --watch . ./src server.js"
   },

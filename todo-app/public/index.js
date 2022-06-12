@@ -1,18 +1,4 @@
-const addTodo = (todoList, value) => {
-  // create <li> element
-  const todoItem = document.createElement("li");
-
-  // Add classes
-  todoItem.classList.add("todo-item");
-  todoItem.innerText = value;
-
-  todoItem.addEventListener("click", () => {
-    editHandler(todoItem);
-  });
-
-  // Append to DOM
-  todoList.appendChild(todoItem);
-};
+const todoItems = {};
 
 const editHandler = (todoItem) => {
   const hasInput = !!todoItem.querySelector(".todo-edit");
@@ -27,16 +13,74 @@ const editHandler = (todoItem) => {
   inputField.value = value;
   inputField.classList.add("todo-edit");
 
-  const handler = () => {
+  const inputBlurEditHandler = async () => {
     // tbd: remove event listener.
-    todoItem.innerText = inputField.value;
-    inputField.remove();
+
+    try {
+      await axios.patch("/todo/" + todoItem.id, {
+        value: inputField.value,
+      });
+
+      todoItem.innerText = inputField.value;
+      inputField.remove();
+    } catch (e) {
+      console.error("We have an error");
+      console.error(e);
+    }
   };
 
-  inputField.addEventListener("blur", handler);
+  inputField.addEventListener("blur", inputBlurEditHandler);
 
   todoItem.appendChild(inputField);
   inputField.focus();
+};
+
+const removeHandler = async (todoItem) => {
+  try {
+    await axios.delete("/todo/" + todoItem.id); // /todo/1
+
+    todoItem.remove();
+  } catch (e) {
+    console.error("We have an error");
+    console.error(e);
+  }
+};
+
+// CRUD
+// Create-Read-Update-Delete
+// PUT-GET-PATCH-DELETE
+// GET - to get something
+// POST - to calculate something
+// PATCH - to update resource
+// DELETE - to delete resource
+// PUT - add something
+
+const addTodo = (todoList, id, value) => {
+  // create <li> element
+  const todoItem = document.createElement("li");
+
+  // Add classes
+  todoItem.classList.add("todo-item");
+  todoItem.id = id;
+  todoItem.innerText = value;
+
+  todoItem.addEventListener("click", () => {
+    editHandler(todoItem);
+  });
+
+  const imgRemoveBtn = document.createElement("img");
+  imgRemoveBtn.src = "./remove-icon.png";
+  imgRemoveBtn.classList.add("todo-item-remove");
+
+  imgRemoveBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    removeHandler(todoItem);
+  });
+
+  todoItem.appendChild(imgRemoveBtn);
+
+  // Append to DOM
+  todoList.appendChild(todoItem);
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -59,8 +103,9 @@ document.addEventListener("DOMContentLoaded", async () => {
    * Fill todos from server
    */
 
-  loadedTodoItems.forEach((todoValue) => {
-    addTodo(todoList, todoValue);
+  loadedTodoItems.forEach((todoItem) => {
+    const { id, value } = todoItem;
+    addTodo(todoList, id, value);
   });
 
   /**
@@ -73,15 +118,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  // todo counter
-  let i = 0;
-
   /**
    * Add new todos impl.
    */
   if (todoAddBtn && todoList) {
-    todoAddBtn.addEventListener("click", () => {
-      addTodo(todoList, i);
+    todoAddBtn.addEventListener("click", async () => {
+      try {
+        const { id, value } = (await axios.post("/todo")).data;
+
+        addTodo(todoList, id, value);
+      } catch (e) {
+        console.error("We have an error");
+        console.error(e);
+      }
     });
   }
 });
